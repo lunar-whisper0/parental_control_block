@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Family Mode · This app is blocked</title>
+  <meta name="color-scheme" content="dark light">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg: #0b0f17;
+      --bg-2: #0f1726;
+      --card: rgba(255,255,255,.06);
+      --card-border: rgba(255,255,255,.12);
+      --text: #e8eefc;
+      --muted: #9fb0d0;
+      --accent-1: #7c9dfc;
+      --accent-2: #52e0ff;
+      --danger: #ff6b6b;
+      --ok: #54e391;
+      --shadow: 0 20px 50px rgba(0,0,0,.45), inset 0 0 0 1px rgba(255,255,255,.06);
+    }
+    @media (prefers-color-scheme: light){
+      :root{
+        --bg: #f6f8ff;
+        --bg-2: #e9edff;
+        --card: rgba(255,255,255,.9);
+        --card-border: rgba(21, 46, 105, 0.08);
+        --text: #0b1a3a;
+        --muted: #3b4a73;
+        --accent-1: #3a63ff;
+        --accent-2: #00b7ff;
+        --danger: #d94848;
+        --ok: #1aab62;
+        --shadow: 0 10px 30px rgba(14,36,80,.12), inset 0 0 0 1px rgba(21,46,105,.06);
+      }
+    }
+
+    *{ box-sizing: border-box; }
+    html, body { height: 100%; }
+    body{
+      margin: 0;
+      font-family: 'Inter', system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji";
+      color: var(--text);
+      background: radial-gradient(1200px 800px at 80% -10%, rgba(124,157,252,.15), transparent 60%),
+                  radial-gradient(900px 700px at -10% 110%, rgba(82,224,255,.12), transparent 60%),
+                  linear-gradient(180deg, var(--bg-2), var(--bg));
+      overflow: hidden;
+    }
+
+    /* Animated background blobs */
+    .blob{ position: absolute; filter: blur(40px); opacity: .22; pointer-events: none; }
+    .blob.one{ width: 680px; height: 680px; background: radial-gradient(circle at 30% 30%, var(--accent-1), transparent 60%);
+      top: -120px; right: -180px; animation: float1 14s ease-in-out infinite; }
+    .blob.two{ width: 520px; height: 520px; background: radial-gradient(circle at 70% 60%, var(--accent-2), transparent 60%);
+      bottom: -140px; left: -120px; animation: float2 16s ease-in-out infinite; }
+    @keyframes float1{ 0%,100%{ transform: translateY(0) } 50%{ transform: translateY(35px) } }
+    @keyframes float2{ 0%,100%{ transform: translateY(0) } 50%{ transform: translateY(-25px) } }
+
+    /* Subtle noise overlay */
+    .noise{ position: fixed; inset: 0; pointer-events: none; opacity: .06; background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="160" height="160" viewBox="0 0 160 160"><filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="2" stitchTiles="stitch"/></filter><rect width="100%" height="100%" filter="url(%23n)" opacity="0.6"/></svg>'); mix-blend-mode: overlay; }
+
+    .wrap{ position: relative; height: 100%; display: grid; place-items: center; padding: 24px; }
+
+    .card{
+      width: min(760px, 92vw);
+      background: var(--card);
+      border: 1px solid var(--card-border);
+      border-radius: 24px;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(14px) saturate(140%);
+      -webkit-backdrop-filter: blur(14px) saturate(140%);
+      position: relative;
+      overflow: clip;
+    }
+
+    .ribbon{ position: absolute; top: 14px; right: -60px; transform: rotate(35deg); background: linear-gradient(90deg, var(--danger), #ff9a76); color: white; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; padding: 10px 80px; box-shadow: 0 10px 30px rgba(0,0,0,.25); }
+
+    header{ display: flex; gap: 20px; align-items: center; padding: 28px 28px 8px 28px; }
+
+    .shield{
+      width: 72px; height: 72px; border-radius: 20px; display: grid; place-items: center;
+      background: conic-gradient(from 210deg, rgba(124,157,252,.25), rgba(82,224,255,.2));
+      border: 1px solid var(--card-border);
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,.05), 0 8px 25px rgba(0,0,0,.25);
+      position: relative; overflow: hidden;
+    }
+    .shield::after{ content:""; position:absolute; inset:0; background: linear-gradient(120deg, rgba(255,255,255,.25), transparent 35%); transform: translateX(-100%); animation: shine 5s ease-in-out infinite; }
+    @keyframes shine{ 0%{ transform: translateX(-120%) } 20%{ transform: translateX(120%) } 100%{ transform: translateX(120%) } }
+
+    h1{ font-size: clamp(28px, 4vw, 36px); line-height: 1.15; margin: 0; font-weight: 800; letter-spacing: -0.02em; }
+    .subtitle{ color: var(--muted); margin-top: 6px; }
+
+    .body{ padding: 12px 28px 24px 28px; display: grid; gap: 16px; }
+
+    .notice{
+      background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.02));
+      border: 1px dashed var(--card-border);
+      padding: 14px 16px; border-radius: 14px; color: var(--muted);
+      display: grid; grid-template-columns: 28px 1fr; gap: 12px; align-items: start;
+    }
+
+    .meta{ display: flex; flex-wrap: wrap; gap: 10px 14px; font-size: 14px; color: var(--muted); }
+    .pill{ padding: 8px 12px; border-radius: 999px; background: rgba(255,255,255,.06); border: 1px solid var(--card-border); }
+
+    .actions{ display: flex; flex-wrap: wrap; gap: 12px; margin-top: 8px; }
+    button, .btn{
+      appearance: none; border: 0; border-radius: 14px; padding: 12px 16px; font-weight: 700; cursor: pointer; transition: transform .08s ease, box-shadow .25s ease, background .25s ease;
+      box-shadow: 0 10px 25px rgba(0,0,0,.25), inset 0 0 0 1px rgba(255,255,255,.05);
+      display: inline-flex; align-items: center; gap: 10px; text-decoration: none; user-select: none;
+    }
+    .btn-primary{ background: linear-gradient(180deg, var(--accent-1), #4f79ff); color: white; }
+    .btn-secondary{ background: linear-gradient(180deg, rgba(255,255,255,.12), rgba(255,255,255,.05)); color: var(--text); }
+    .btn-danger{ background: linear-gradient(180deg, #ff7272, #ff4b4b); color: white; }
+    button:active{ transform: translateY(1px) scale(.99); }
+
+    details{ background: rgba(255,255,255,.06); border: 1px solid var(--card-border); border-radius: 12px; padding: 14px 16px; }
+    details summary{ cursor: pointer; list-style: none; font-weight: 700; }
+    details[open] { box-shadow: 0 12px 30px rgba(0,0,0,.15) inset; }
+    details summary::-webkit-details-marker{ display:none }
+
+    .footer{ display:flex; align-items:center; justify-content: space-between; gap: 12px; border-top: 1px solid var(--card-border); padding: 16px 20px; font-size: 13px; color: var(--muted); backdrop-filter: blur(6px); }
+
+    .kbd{ font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace; padding: 2px 6px; border-radius: 6px; border: 1px solid var(--card-border); background: rgba(255,255,255,.06); font-size: .9em; }
+
+    .hidden{ display:none !important }
+
+    /* Modal */
+    .modal{ position: fixed; inset: 0; display: grid; place-items: center; background: rgba(2,8,21,.55); backdrop-filter: blur(6px); padding: 20px; }
+    .modal .inner{ width: min(520px, 92vw); background: var(--card); border: 1px solid var(--card-border); border-radius: 18px; box-shadow: var(--shadow); overflow: hidden; }
+    .modal header{ padding: 20px; border-bottom: 1px solid var(--card-border); }
+    .modal .body{ padding: 18px 20px 20px 20px; }
+    .field{ display: grid; gap: 6px; }
+    .field input{ width: 100%; padding: 12px 14px; border-radius: 12px; background: rgba(255,255,255,.08); color: var(--text); border: 1px solid var(--card-border); outline: none; }
+
+    .toast{ position: fixed; right: 18px; bottom: 18px; background: rgba(255,255,255,.1); border: 1px solid var(--card-border); color: var(--text); padding: 12px 14px; border-radius: 12px; box-shadow: var(--shadow); }
+  </style>
+</head>
+<body>
+  <div class="blob one"></div>
+  <div class="blob two"></div>
+  <div class="noise" aria-hidden="true"></div>
+
+  <div class="wrap">
+    <main class="card" role="dialog" aria-modal="true" aria-labelledby="title">
+      <div class="ribbon" aria-hidden="true">Restricted</div>
+      <header>
+        <div class="shield" aria-hidden="true">
+          <!-- Shield Lock Icon -->
+          <svg width="44" height="44" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M12 2l7 3v5c0 5.25-3.5 9.75-7 10-3.5-.25-7-4.75-7-10V5l7-3z" fill="url(#g)" opacity=".85"/>
+            <defs>
+              <linearGradient id="g" x1="0" y1="0" x2="24" y2="24" gradientUnits="userSpaceOnUse">
+                <stop stop-color="#7c9dfc"/>
+                <stop offset="1" stop-color="#52e0ff"/>
+              </linearGradient>
+            </defs>
+            <g fill="#0b1222" opacity=".9">
+              <rect x="8" y="10" width="8" height="6" rx="2"/>
+              <circle cx="12" cy="13" r="1" fill="#7c9dfc"/>
+            </g>
+          </svg>
+        </div>
+        <div>
+          <h1 id="title">This app is blocked</h1>
+          <div class="subtitle">Parental controls have restricted access to this app on this device.</div>
+        </div>
+      </header>
+
+      <section class="body" aria-live="polite">
+        <div class="notice" role="status">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M12 2a10 10 0 100 20 10 10 0 000-20zm0 5a1.25 1.25 0 110 2.5A1.25 1.25 0 0112 7zm-1.25 4h2.5v6.5h-2.5V11z" fill="currentColor"/></svg>
+          <div>
+            <strong>Reason:</strong> Daily time limit reached · Content rating blocked · Scheduled downtime
+            <div style="margin-top:6px">If you think this is a mistake, you can request access from your parent or guardian.</div>
+          </div>
+        </div>
+
+        <div class="meta">
+          <div class="pill" id="appName">App: Unknown</div>
+          <div class="pill" id="until">Blocked until: Today, 8:00 PM</div>
+          <div class="pill">Code: ERR-PC-403</div>
+          <div class="pill" id="localTime">Local time: —</div>
+        </div>
+
+        <div class="actions">
+          <button class="btn btn-primary" id="requestBtn" aria-describedby="requestHint">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M12 5v14m7-7H5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+            Request Access
+          </button>
+          <button class="btn btn-secondary" id="learnBtn">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M12 7v5l4 2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+            Learn More
+          </button>
+          <button class="btn btn-danger" id="closeBtn">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+            Close App
+          </button>
+        </div>
+
+        <details>
+          <summary>Why am I seeing this?</summary>
+          <ul>
+            <li>Your device is in <strong>Downtime</strong> or <strong>Schooltime</strong>.</li>
+            <li>This app exceeds the <strong>Content Rating</strong> set by your family group.</li>
+            <li>You've reached today's <strong>Time Limit</strong> for this app or category.</li>
+          </ul>
+          <p>Tip: A parent can press and hold the lock icon for 3 seconds to enter a PIN and override once.</p>
+        </details>
+      </section>
+
+      <div class="footer">
+        <div>Family Mode · Safety first</div>
+        <div>
+          Need help? Press <span class="kbd">F1</span> · <span id="footTime">—</span>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Parent Override Modal -->
+  <div class="modal hidden" id="pinModal" role="dialog" aria-modal="true" aria-labelledby="pinTitle">
+    <div class="inner">
+      <header>
+        <h2 id="pinTitle" style="margin:0; font-size:20px;">Parent Override</h2>
+      </header>
+      <div class="body">
+        <div class="field">
+          <label for="pin">Enter PIN (4–8 digits)</label>
+          <input id="pin" name="pin" inputmode="numeric" pattern="[0-9]*" autocomplete="one-time-code" placeholder="••••" />
+        </div>
+        <div class="actions" style="margin-top:14px">
+          <button class="btn btn-primary" id="unlockBtn">Unlock for 15 min</button>
+          <button class="btn btn-secondary" id="cancelPinBtn">Cancel</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast hidden" id="toast" role="status" aria-live="polite">Request sent to parent ✔</div>
+
+  <script>
+    // Small helpers
+    const $ = (s, el=document) => el.querySelector(s);
+    const fmt = (d) => d.toLocaleString([], { hour: '2-digit', minute: '2-digit' });
+
+    // Demo: derive app name from URL query ?app=YouTube
+    const params = new URLSearchParams(location.search);
+    const appName = params.get('app') || 'Unknown';
+    $('#appName').textContent = `App: ${appName}`;
+
+    // Set block-until time ~ example +2 hours from now
+    const now = new Date();
+    const until = new Date(now.getTime() + 2 * 60 * 60 * 1000);
+    $('#until').textContent = `Blocked until: Today, ${fmt(until)}`;
+    $('#localTime').textContent = `Local time: ${fmt(now)}`;
+    $('#footTime').textContent = new Date().toLocaleString();
+
+    // Button handlers
+    const toast = $('#toast');
+    const showToast = (msg) => { toast.textContent = msg; toast.classList.remove('hidden'); setTimeout(()=>toast.classList.add('hidden'), 2400); };
+
+    $('#requestBtn').addEventListener('click', ()=> showToast('Request sent to parent ✔'));
+    $('#learnBtn').addEventListener('click', ()=> alert('Parental controls help: Limits, Ratings, and Downtime.'));
+    $('#closeBtn').addEventListener('click', ()=> {
+      showToast('App closed');
+      // Attempt to close if in a PWA/webview; otherwise just navigate away
+      setTimeout(()=>{ location.href = 'about:blank'; }, 600);
+    });
+
+    // Long-press to open PIN (hold shield 1200ms)
+    const shield = document.querySelector('.shield');
+    let pressTimer;
+    shield.addEventListener('mousedown', startPress);
+    shield.addEventListener('touchstart', startPress);
+    ;['mouseup','mouseleave','touchend','touchcancel'].forEach(e=>shield.addEventListener(e, cancelPress));
+    function startPress(e){ e.preventDefault(); pressTimer = setTimeout(()=>openPin(), 1200); }
+    function cancelPress(){ clearTimeout(pressTimer); }
+
+    const pinModal = $('#pinModal');
+    function openPin(){ pinModal.classList.remove('hidden'); $('#pin').focus(); }
+    $('#cancelPinBtn').addEventListener('click', ()=> pinModal.classList.add('hidden'));
+
+    $('#unlockBtn').addEventListener('click', ()=>{
+      const val = $('#pin').value.trim();
+      if(!/^\d{4,8}$/.test(val)) return showToast('Invalid PIN');
+      pinModal.classList.add('hidden');
+      showToast('Temporarily unlocked for 15 minutes');
+      document.body.style.filter = 'grayscale(0)';
+      // Demo disable state: fade card and update label
+      $('#until').textContent = 'Override active: 15 minutes';
+      $('.ribbon').textContent = 'Override';
+      $('.ribbon').style.background = 'linear-gradient(90deg, var(--ok), #8cf0ba)';
+    });
+
+    // Keyboard shortcut: F1 opens help
+    window.addEventListener('keydown', (e)=>{ if(e.key === 'F1'){ e.preventDefault(); alert('Help center: Ask a parent to approve access or adjust limits.'); } });
+
+    // Respect reduced motion
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      document.querySelectorAll('.blob').forEach(b=> b.style.animation = 'none');
+    }
+  </script>
+</body>
+</html>
